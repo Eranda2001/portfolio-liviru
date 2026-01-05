@@ -3,7 +3,7 @@ import { useForm, ValidationError } from '@formspree/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Github, Linkedin, Mail, Download, ExternalLink, X, Database, Server, Code, GraduationCap, 
-  Award, BookOpen, Cpu, Phone, MapPin, Send, Briefcase, Lock,
+  Award, BookOpen, Cpu, Phone, MapPin, Send, Briefcase, Lock, ZoomIn,
   Brain, Layers, BarChart
 } from 'lucide-react';
 
@@ -120,6 +120,16 @@ const projects = [
   },
   {
     id: 3,
+    title: "Bring First Class Support to AMR",
+    category: "Identity & Access Management - WSO2",
+    image: "/amr.png",
+    shortDesc: "The project done during the internship period at WSO2.",
+    fullDesc: "Implemented first-class support for configurable Authentication Method Reference (AMR) values within the Identity Server, enabling organizations to define and manage AMR values per authenticator rather than relying on hardcoded defaults. Introduced AMR as a configurable authenticator property with organization-level control, while ensuring full backward compatibility with existing behavior. Enhanced federated authentication flows to support both consuming AMR values received from external identity providers and overriding them with locally configured values when required. The implementation adheres to the RFC 8176 AMR standard wherever applicable, allowing organizations to align authentication signals with their security policies and downstream resource server requirements.",
+    tech: ["Java", "Identity Server", "OAuth 2.0", "OpenID Connect", "TestNG"],
+    repoLink: "https://github.com/wso2/carbon-identity-framework/pull/6598"
+  },
+  {
+    id: 4,
     title: "Utility Saga",
     category: "Enterprise / IoT",
     image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?auto=format&fit=crop&q=80&w=1000",
@@ -129,7 +139,7 @@ const projects = [
     repoLink: "https://github.com/visith1577/Utility-Saga"
   },
   {
-    id: 4,
+    id: 5,
     title: "KindCoin",
     category: "Blockchain / Web3",
     image: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&q=80&w=1000",
@@ -184,7 +194,14 @@ const SkillColumn = ({ title, items, icon: Icon }) => (
 
 const App = () => {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [state, handleSubmit] = useForm(import.meta.env.VITE_FORM_ID); 
+
+  useEffect(() => {
+    if (!selectedProject) {
+      setIsImageZoomed(false);
+    }
+  }, [selectedProject]);
 
   return (
     <div className="relative min-h-screen bg-primary text-slate-300 font-sans selection:bg-accent selection:text-primary overflow-x-hidden">
@@ -507,7 +524,7 @@ const App = () => {
       <AnimatePresence>
         {selectedProject && (
           <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <motion.div 
+          <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => setSelectedProject(null)}
               className="absolute inset-0 bg-black/80 backdrop-blur-sm"
@@ -517,7 +534,19 @@ const App = () => {
               className="relative bg-surface w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-700 shadow-2xl flex flex-col"
             >
               <button onClick={() => setSelectedProject(null)} className="absolute top-4 right-4 p-2 bg-black/50 rounded-full text-white hover:bg-accent transition-all z-20"><X size={20} /></button>
-              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-64 object-cover" />
+              <div 
+                className="h-64 md:h-80 overflow-hidden relative cursor-zoom-in group"
+                onClick={() => setIsImageZoomed(true)}
+              >
+                 <img 
+                    src={selectedProject.image} 
+                    alt={selectedProject.title} 
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
+                 />
+                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+                    <ZoomIn className="text-white drop-shadow-md" size={32} />
+                 </div>
+              </div>
               <div className="p-8 flex-grow">
                 <h3 className="text-3xl font-bold text-white mb-2">{selectedProject.title}</h3>
                 <p className="text-slate-300 leading-relaxed mb-6 text-base">{selectedProject.fullDesc}</p>
@@ -532,17 +561,46 @@ const App = () => {
                   <button 
                     disabled 
                     className="flex items-center gap-2 px-6 py-2.5 bg-slate-800/50 text-slate-500 font-semibold rounded-lg border border-slate-800 cursor-not-allowed"
-                  >
+            >
                     <Lock size={18} /> Private Code
-                  </button>
+            </button>
                 ) : (
                   <a href={selectedProject.repoLink} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-lg border border-slate-600 transition-all">
                     <Code size={18} /> View Code
                   </a>
                 )}
               </div>
-            </motion.div>
+          </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isImageZoomed && selectedProject && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsImageZoomed(false)}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/95 p-4 md:p-10 cursor-zoom-out backdrop-blur-sm"
+          >
+            <motion.img 
+               initial={{ scale: 0.8 }}
+               animate={{ scale: 1 }}
+               exit={{ scale: 0.8 }}
+               src={selectedProject.image} 
+               alt={selectedProject.title}
+               className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+               onClick={(e) => e.stopPropagation()} 
+            />
+            
+            <button 
+              onClick={() => setIsImageZoomed(false)}
+              className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+            >
+              <X size={32} />
+            </button>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
