@@ -4,7 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Github, Linkedin, Mail, Download, ExternalLink, X, Database, Server, Code, GraduationCap, 
   Award, BookOpen, Cpu, Phone, MapPin, Send, Briefcase, Lock, ZoomIn,
-  Brain, Layers, BarChart
+  Brain, Layers, BarChart,
+  LanguagesIcon,
+  Languages
 } from 'lucide-react';
 
 const personalInfo = {
@@ -38,7 +40,8 @@ const coreConcepts = [
 
 const skills = {
   frontend: ["React.js", "JavaScript", "TypeScript", "HTML5", "CSS3", "Tailwind CSS", "Bootstrap"],
-  backend: ["Java", "Spring Boot", "Node.js", "Express.js", "Django", "C++"],
+  langauges: ["Java", "C++", "C", "Python"],
+  backend: ["oSGi",  "Spring Boot", "Node.js", "Express.js", "Django"],
   database: ["MySQL", "MongoDB", "PostgreSQL", "Firebase", "MS SQL Server"],
   tools: ["AWS", "Docker", "Kubernetes", "Git", "Linux", "Jenkins", "Postman", "Swagger", "Selenium", "JUnit"]
 };
@@ -109,13 +112,13 @@ const projects = [
     repoLink: "https://github.com/Eranda2001"
   },
   {
-    id: 2,
-    title: "Modurix Labs",
-    category: "Logistics",
-    image: "https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&q=80&w=1000",
-    shortDesc: "Product based Logistic Solution.",
-    fullDesc: "Currently developing an end-to-end logistics solution aimed at streamlining delivery operations from order creation to final drop-off with real-time visibility. The platform focuses on enabling customers to track deliveries live, allowing drivers to update trip progress dynamically, and ensuring reliable order handling even during partial failures. This project is being built with a strong emphasis on real-world applicability, scalability, and evolving into a production-ready logistics product.",
-    tech: ["Java", "Spring Boot", "Docker", "K8s", "Kafka", "Zookeeper"],
+    id: 2, 
+    title: "xv6 Kernel Implementation",
+    category: "Systems Engineering",
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1000", 
+    shortDesc: "Core kernel feature implementation for the xv6 Unix operating system.",
+    fullDesc: "Engineered core kernel features within the xv6 Unix operating system, gaining deep familiarity with virtual memory paging, interrupt handling, and process scheduling. Implemented custom system calls (syscalls) by extending the kernel trap handlers and user-kernel mode transitions. Optimized memory management routines to handle concurrent process execution, ensuring thread safety and preventing race conditions using spinlocks.",
+    tech: ["C", "Assembly", "QEMU", "Unix Internals", "OS Dev"],
     repoLink: "https://github.com/Eranda2001"
   },
   {
@@ -130,6 +133,16 @@ const projects = [
   },
   {
     id: 4,
+    title: "Modurix Labs",
+    category: "Logistics",
+    image: "https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&q=80&w=1000",
+    shortDesc: "Product based Logistic Solution.",
+    fullDesc: "Currently developing an end-to-end logistics solution aimed at streamlining delivery operations from order creation to final drop-off with real-time visibility. The platform focuses on enabling customers to track deliveries live, allowing drivers to update trip progress dynamically, and ensuring reliable order handling even during partial failures. This project is being built with a strong emphasis on real-world applicability, scalability, and evolving into a production-ready logistics product.",
+    tech: ["Java", "Spring Boot", "Docker", "K8s", "Kafka"],
+    repoLink: "https://github.com/Eranda2001"
+  },
+  {
+    id: 5,
     title: "Utility Saga",
     category: "Enterprise / IoT",
     image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?auto=format&fit=crop&q=80&w=1000",
@@ -139,7 +152,7 @@ const projects = [
     repoLink: "https://github.com/visith1577/Utility-Saga"
   },
   {
-    id: 5,
+    id: 6,
     title: "KindCoin",
     category: "Blockchain / Web3",
     image: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&q=80&w=1000",
@@ -147,6 +160,16 @@ const projects = [
     fullDesc: "KindCoin is a web-based donation platform enabling users to contribute and track monetary and material donations through a centralized system. It implements a blockchain-based reward mechanism to transparently acknowledge and incentivize donor contributions. The system also integrates text extraction and recommendation features to help users identify relevant donation opportunities efficiently.",
     tech: ["React", "Node.js", "MongoDB", "Blockchain"],
     repoLink: "https://github.com/ruwangakonara/kindcoinserver"
+  },
+  {
+    id: 7,
+    title: "Flower Exchange Engine",
+    category: "FinTech",
+    image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&q=80&w=1000",
+    shortDesc: "High-performance Order Matching Engine simulating a real-time trading platform.",
+    fullDesc: "Developed a C++ based order matching engine in collaboration with the London Stock Exchange Group (LSEG) and UCSC. This simulator processes real-time buy and sell orders using price-time priority algorithms. It features custom priority queue implementations for managing separate order books, supports multiple trading instruments, and generates comprehensive execution reports (Fill, Partial Fill, Reject) with sub-millisecond latency.",
+    tech: ["C++", "Data Structures", "Algorithms", "CSV Processing", "Optimization"],
+    repoLink: "https://github.com/Eranda2001/flower-exchange"
   }
 ];
 
@@ -329,7 +352,7 @@ const App = () => {
           <SectionTitle title="Featured Projects" subtitle="A selection of my recent work in Web Development and ML." />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project) => {
-              const isWorkInProgress = project.id === 1 || project.id === 2;
+              const isWorkInProgress = project.id === 1 || project.id === 2 || project.id === 4;
               return (
                 <motion.div
                   key={project.id}
@@ -411,6 +434,7 @@ const App = () => {
           <section>
              <SectionTitle title="Web Development Stack" subtitle="Comprehensive toolkit for full-stack application development." />
              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+             <SkillColumn title="Langauages" items={skills.langauges} icon={Languages} />
                <SkillColumn title="Backend" items={skills.backend} icon={Server} />
                <SkillColumn title="Frontend" items={skills.frontend} icon={Code} />
                <SkillColumn title="Database" items={skills.database} icon={Database} />
